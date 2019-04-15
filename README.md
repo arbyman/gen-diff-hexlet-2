@@ -5,3 +5,5 @@
 ```$ sudo npm install -g gendiff_arbyman```
 ### Use '-h' flag for help
 [![asciicast](https://asciinema.org/a/3T8ydXoJydroFpCDtH7hmu7mi.svg)](https://asciinema.org/a/3T8ydXoJydroFpCDtH7hmu7mi)
+### GenDiff finds the difference
+[![asciicast](https://asciinema.org/a/6cYvk1bWIo7pXsR8XrZZIiJl1.svg)](https://asciinema.org/a/6cYvk1bWIo7pXsR8XrZZIiJl1)
