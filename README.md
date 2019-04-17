@@ -9,3 +9,5 @@
 [![asciicast](https://asciinema.org/a/6cYvk1bWIo7pXsR8XrZZIiJl1.svg)](https://asciinema.org/a/6cYvk1bWIo7pXsR8XrZZIiJl1)
 ### Works with YAML
 [![asciicast](https://asciinema.org/a/zGcFQx1IcE005VhQcOGNDbB0B.svg)](https://asciinema.org/a/zGcFQx1IcE005VhQcOGNDbB0B)
+### Supports INI format
+[![asciicast](https://asciinema.org/a/QS2oKTXzNdGp1xa4IrWSRH9Ux.svg)](https://asciinema.org/a/QS2oKTXzNdGp1xa4IrWSRH9Ux)
