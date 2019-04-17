@@ -7,3 +7,5 @@
 [![asciicast](https://asciinema.org/a/3T8ydXoJydroFpCDtH7hmu7mi.svg)](https://asciinema.org/a/3T8ydXoJydroFpCDtH7hmu7mi)
 ### GenDiff finds the difference
 [![asciicast](https://asciinema.org/a/6cYvk1bWIo7pXsR8XrZZIiJl1.svg)](https://asciinema.org/a/6cYvk1bWIo7pXsR8XrZZIiJl1)
+### Works with YAML
+[![asciicast](https://asciinema.org/a/zGcFQx1IcE005VhQcOGNDbB0B.svg)](https://asciinema.org/a/zGcFQx1IcE005VhQcOGNDbB0B)

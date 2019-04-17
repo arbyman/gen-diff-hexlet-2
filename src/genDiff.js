@@ -1,7 +1,5 @@
-import fs from 'fs';
 import _ from 'lodash';
-
-const getData = filePath => JSON.parse(fs.readFileSync(filePath, 'utf-8'));
+import parse from './parsers';
 
 const getDifferenceConfigs = (firstConfig, secondConfig) => Object.keys(firstConfig)
   .reduce((acc, key) => {
@@ -28,8 +26,8 @@ const addNewKeys = (firstConfig, secondConfig, differenceConfig) => Object.keys(
   }, differenceConfig);
 
 export default (firstPath, secondPath) => {
-  const firstConfig = getData(firstPath);
-  const secondConfig = getData(secondPath);
+  const firstConfig = parse(firstPath);
+  const secondConfig = parse(secondPath);
   const differenceConfig = getDifferenceConfigs(firstConfig, secondConfig);
   const differenceWithNewKeys = addNewKeys(firstConfig, secondConfig, differenceConfig);
   return format(differenceWithNewKeys);
