@@ -6,6 +6,8 @@ const diffPath = path.join(__dirname, '../__tests__/__fixtures__/expectedDiff.tx
 const diffConfig = fs.readFileSync(diffPath, 'utf-8');
 const diffNestedPath = path.join(__dirname, '../__tests__/__fixtures__/nested/expectedNestedDiff.txt');
 const diffNestedConfig = fs.readFileSync(diffNestedPath, 'utf-8');
+const diffPlainPath = path.join(__dirname, '../__tests__/__fixtures__/expectedPlainDiff.txt');
+const diffPlainConfig = fs.readFileSync(diffPlainPath, 'utf-8');
 
 test.each([
   [
@@ -26,7 +28,7 @@ test.each([
 ])(
   'returns expected difference for JSON, YAML, INI.',
   (firstPath, secondPath, expected) => {
-    expect(genDiff(firstPath, secondPath)).toBe(expected);
+    expect(genDiff(firstPath, secondPath, 'tree')).toBe(expected);
   },
 );
 
@@ -49,6 +51,29 @@ test.each([
 ])(
   'works with nested structures.',
   (firstPath, secondPath, expected) => {
-    expect(genDiff(firstPath, secondPath)).toBe(expected);
+    expect(genDiff(firstPath, secondPath, 'tree')).toBe(expected);
+  },
+);
+
+test.each([
+  [
+    path.join(__dirname, '../__tests__/__fixtures__/nested/before.json'),
+    path.join(__dirname, '../__tests__/__fixtures__/nested/after.json'),
+    diffPlainConfig,
+  ],
+  [
+    path.join(__dirname, '../__tests__/__fixtures__/nested/before.yml'),
+    path.join(__dirname, '../__tests__/__fixtures__/nested/after.yml'),
+    diffPlainConfig,
+  ],
+  [
+    path.join(__dirname, '../__tests__/__fixtures__/nested/before.ini'),
+    path.join(__dirname, '../__tests__/__fixtures__/nested/after.ini'),
+    diffPlainConfig,
+  ],
+])(
+  'support plain format.',
+  (firstPath, secondPath, expected) => {
+    expect(genDiff(firstPath, secondPath, 'plain')).toBe(expected);
   },
 );
