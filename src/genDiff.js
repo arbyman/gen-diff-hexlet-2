@@ -1,34 +1,87 @@
 import _ from 'lodash';
 import parse from './parsers';
 
-const getDifferenceConfigs = (firstConfig, secondConfig) => Object.keys(firstConfig)
-  .reduce((acc, key) => {
-    if (_.has(secondConfig, key)) {
-      if (firstConfig[key] === secondConfig[key]) {
-        return [...acc, `${key}: ${firstConfig[key]}`];
+const buildAst = (firstConfig, secondConfig) => {
+  const keysBefore = Object.keys(firstConfig);
+  const keysAfter = Object.keys(secondConfig);
+  const keysAll = _.union(keysBefore, keysAfter);
+  return keysAll.reduce((acc, key) => {
+    if (_.has(secondConfig, key) && _.has(firstConfig, key)) {
+      if (_.isObject(firstConfig[key]) && _.isObject(secondConfig[key])) {
+        return [...acc, {
+          key,
+          value: '',
+          state: 'unchanged',
+          children: buildAst(firstConfig[key], secondConfig[key]),
+        }];
       }
-      return [...acc, `+ ${key}: ${secondConfig[key]}`, `- ${key}: ${firstConfig[key]}`];
+      if (firstConfig[key] === secondConfig[key]) {
+        return [...acc, {
+          key,
+          value: firstConfig[key],
+          state: 'unchanged',
+          children: [],
+        }];
+      }
+      return [...acc, {
+        key,
+        value: [firstConfig[key], secondConfig[key]],
+        state: 'changed',
+        children: [],
+      }];
     }
-    return [...acc, `- ${key}: ${firstConfig[key]}`];
+    if (!_.has(firstConfig, key)) {
+      return [...acc, {
+        key,
+        value: secondConfig[key],
+        state: 'added',
+        children: [],
+      }];
+    }
+    return [...acc, {
+      key,
+      value: firstConfig[key],
+      state: 'deleted',
+      children: [],
+    }];
   }, []);
+};
+const tab = 2;
+const currentTab = depth => ' '.repeat(tab * depth);
 
-const format = (difference) => {
-  const formatted = difference.slice().map(item => `  ${item}`).join('\n');
-  return `{\n${formatted}\n}`;
+const stringify = (value, depth) => {
+  if (!_.isObject(value)) {
+    return value;
+  }
+  const line = Object.keys(value)
+    .reduce((acc, key) => `${acc}${currentTab(depth)}${key}: ${value[key]}`, '');
+  return `{\n${line}\n${currentTab(depth - tab)}}`;
 };
 
-const addNewKeys = (firstConfig, secondConfig, differenceConfig) => Object.keys(secondConfig)
-  .reduce((result, key) => {
-    if (_.has(firstConfig, key)) {
-      return result;
-    }
-    return [...result, `+ ${key}: ${secondConfig[key]}`];
-  }, differenceConfig);
-
+const render = (ast, depth = 1) => ast.reduce((acc, item) => {
+  const {
+    key, value, state, children,
+  } = item;
+  if (state === 'added') {
+    return `${acc}${currentTab(depth)}+ ${key}: ${stringify(value, depth + 3)}\n`;
+  }
+  if (state === 'unchanged' && children.length > 0) {
+    return `${acc}${currentTab(depth)}  ${key}: {\n${render(children, depth + 2)}${currentTab(depth)}  }\n`;
+  }
+  if (state === 'unchanged') {
+    return `${acc}${currentTab(depth)}  ${key}: ${stringify(value, depth + 3)}\n`;
+  }
+  if (state === 'deleted') {
+    return `${acc}${currentTab(depth)}- ${key}: ${stringify(value, depth + 3)}\n`;
+  }
+  if (state === 'changed') {
+    return `${acc}${currentTab(depth)}- ${key}: ${stringify(value[0], depth + 3)}\n${currentTab(depth)}+ ${key}: ${stringify(value[1], depth + 3)}\n`;
+  }
+  return acc;
+}, '');
 export default (firstPath, secondPath) => {
   const firstConfig = parse(firstPath);
   const secondConfig = parse(secondPath);
-  const differenceConfig = getDifferenceConfigs(firstConfig, secondConfig);
-  const differenceWithNewKeys = addNewKeys(firstConfig, secondConfig, differenceConfig);
-  return format(differenceWithNewKeys);
+  const ast = buildAst(firstConfig, secondConfig);
+  return `{\n${render(ast)}}`;
 };
