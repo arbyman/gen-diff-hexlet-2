@@ -11,3 +11,5 @@
 [![asciicast](https://asciinema.org/a/zGcFQx1IcE005VhQcOGNDbB0B.svg)](https://asciinema.org/a/zGcFQx1IcE005VhQcOGNDbB0B)
 ### Supports INI format
 [![asciicast](https://asciinema.org/a/QS2oKTXzNdGp1xa4IrWSRH9Ux.svg)](https://asciinema.org/a/QS2oKTXzNdGp1xa4IrWSRH9Ux)
+### Works with nested structures
+[![asciicast](https://asciinema.org/a/WkcxhMs5xsnbhKM040dZ2g2Z1.svg)](https://asciinema.org/a/WkcxhMs5xsnbhKM040dZ2g2Z1)
