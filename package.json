@@ -22,7 +22,8 @@
   ],
   "license": "ISC",
   "jest": {
-    "testEnvironment": "node"
+    "testEnvironment": "node",
+    "collectCoverage": true
   },
   "devDependencies": {
     "@babel/cli": "^7.4.3",
