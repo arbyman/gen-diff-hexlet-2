@@ -8,6 +8,8 @@ const diffNestedPath = path.join(__dirname, '../__tests__/__fixtures__/nested/ex
 const diffNestedConfig = fs.readFileSync(diffNestedPath, 'utf-8');
 const diffPlainPath = path.join(__dirname, '../__tests__/__fixtures__/expectedPlainDiff.txt');
 const diffPlainConfig = fs.readFileSync(diffPlainPath, 'utf-8');
+const diffJSONPath = path.join(__dirname, '../__tests__/__fixtures__/expectedJSONDiff.json');
+const diffJSONConfig = fs.readFileSync(diffJSONPath, 'utf-8');
 
 test.each([
   [
@@ -75,5 +77,28 @@ test.each([
   'support plain format.',
   (firstPath, secondPath, expected) => {
     expect(genDiff(firstPath, secondPath, 'plain')).toBe(expected);
+  },
+);
+
+test.each([
+  [
+    path.join(__dirname, '../__tests__/__fixtures__/nested/before.json'),
+    path.join(__dirname, '../__tests__/__fixtures__/nested/after.json'),
+    diffJSONConfig,
+  ],
+  [
+    path.join(__dirname, '../__tests__/__fixtures__/nested/before.yml'),
+    path.join(__dirname, '../__tests__/__fixtures__/nested/after.yml'),
+    diffJSONConfig,
+  ],
+  [
+    path.join(__dirname, '../__tests__/__fixtures__/nested/before.ini'),
+    path.join(__dirname, '../__tests__/__fixtures__/nested/after.ini'),
+    diffJSONConfig,
+  ],
+])(
+  'support JSON output format.',
+  (firstPath, secondPath, expected) => {
+    expect(genDiff(firstPath, secondPath, 'json')).toBe(expected);
   },
 );
