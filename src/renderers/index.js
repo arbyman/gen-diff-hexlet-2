@@ -1,11 +1,10 @@
 import tree from './tree';
 import plain from './plain';
-import json from './json';
 
 const renders = {
   tree,
   plain,
-  json,
+  json: JSON.stringify,
 };
 
 export default (ast, format) => renders[format](ast);

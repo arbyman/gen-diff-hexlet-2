@@ -14,23 +14,21 @@ const stringify = (value, depth) => {
 
 const render = (ast, depth = 1) => ast.reduce((acc, item) => {
   const {
-    key, value, state, children,
+    key, value, type, children, oldValue, newValue,
   } = item;
-  if (state === 'added') {
-    return `${acc}${currentTab(depth)}+ ${key}: ${stringify(value, depth + tab + 1)}\n`;
+  switch (type) {
+    case 'added':
+      return `${acc}${currentTab(depth)}+ ${key}: ${stringify(value, depth + tab + 1)}\n`;
+    case 'unchangedButHasChildren':
+      return `${acc}${currentTab(depth)}  ${key}: {\n${render(children, depth + tab)}${currentTab(depth)}  }\n`;
+    case 'unchanged':
+      return `${acc}${currentTab(depth)}  ${key}: ${stringify(value, depth + tab + 1)}\n`;
+    case 'deleted':
+      return `${acc}${currentTab(depth)}- ${key}: ${stringify(value, depth + tab + 1)}\n`;
+    case 'changed':
+      return `${acc}${currentTab(depth)}- ${key}: ${stringify(oldValue, depth + tab + 1)}\n${currentTab(depth)}+ ${key}: ${stringify(newValue, depth + tab + 1)}\n`;
+    default:
+      throw new Error('Unknown type node');
   }
-  if (state === 'unchanged' && children.length > 0) {
-    return `${acc}${currentTab(depth)}  ${key}: {\n${render(children, depth + tab)}${currentTab(depth)}  }\n`;
-  }
-  if (state === 'unchanged') {
-    return `${acc}${currentTab(depth)}  ${key}: ${stringify(value, depth + tab + 1)}\n`;
-  }
-  if (state === 'deleted') {
-    return `${acc}${currentTab(depth)}- ${key}: ${stringify(value, depth + tab + 1)}\n`;
-  }
-  if (state === 'changed') {
-    return `${acc}${currentTab(depth)}- ${key}: ${stringify(value[0], depth + tab + 1)}\n${currentTab(depth)}+ ${key}: ${stringify(value[1], depth + tab + 1)}\n`;
-  }
-  return acc;
 }, '');
 export default ast => `{\n${render(ast)}}`;

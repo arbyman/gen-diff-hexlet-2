@@ -10,7 +10,7 @@ const buildAst = (firstConfig, secondConfig) => {
         return [...acc, {
           key,
           value: '',
-          state: 'unchanged',
+          type: 'unchangedButHasChildren',
           children: buildAst(firstConfig[key], secondConfig[key]),
         }];
       }
@@ -18,14 +18,15 @@ const buildAst = (firstConfig, secondConfig) => {
         return [...acc, {
           key,
           value: firstConfig[key],
-          state: 'unchanged',
+          type: 'unchanged',
           children: [],
         }];
       }
       return [...acc, {
         key,
-        value: [firstConfig[key], secondConfig[key]],
-        state: 'changed',
+        oldValue: firstConfig[key],
+        newValue: secondConfig[key],
+        type: 'changed',
         children: [],
       }];
     }
@@ -33,14 +34,14 @@ const buildAst = (firstConfig, secondConfig) => {
       return [...acc, {
         key,
         value: secondConfig[key],
-        state: 'added',
+        type: 'added',
         children: [],
       }];
     }
     return [...acc, {
       key,
       value: firstConfig[key],
-      state: 'deleted',
+      type: 'deleted',
       children: [],
     }];
   }, []);
