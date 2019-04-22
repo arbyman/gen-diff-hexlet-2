@@ -1,4 +1,5 @@
 [![Build Status](https://travis-ci.org/arbyman/project-lvl2-s463.svg?branch=master)](https://travis-ci.org/arbyman/project-lvl2-s463)
+[![Test Coverage](https://api.codeclimate.com/v1/badges/fa604af6196b7164f2ca/test_coverage)](https://codeclimate.com/github/arbyman/project-lvl2-s463/test_coverage)
 [![Maintainability](https://api.codeclimate.com/v1/badges/fa604af6196b7164f2ca/maintainability)](https://codeclimate.com/github/arbyman/project-lvl2-s463/maintainability)
 # Welcome to the Gendiff!
 ## Installation
