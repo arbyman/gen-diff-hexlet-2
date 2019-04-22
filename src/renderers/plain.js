@@ -6,21 +6,21 @@ const stringify = (value) => {
   }
   return '[complex value]';
 };
-const plain = (ast, path = []) => ast.reduce((acc, item) => {
+const plain = (ast, path = []) => ast.map((item) => {
   const {
     key, value, children, type, oldValue, newValue,
   } = item;
   switch (type) {
     case 'added':
-      return [...acc, `Property '${[...path, key].join('.')}' was added with value: ${stringify(value)}`];
-    case 'unchangedButHasChildren':
-      return [...acc, ...plain(children, [...path, key])];
+      return `Property '${[...path, key].join('.')}' was added with value: ${stringify(value)}`;
+    case 'nested':
+      return plain(children, [...path, key]).filter(_.identity);
     case 'deleted':
-      return [...acc, `Property '${[...path, key].join('.')}' was removed`];
+      return `Property '${[...path, key].join('.')}' was removed`;
     case 'changed':
-      return [...acc, `Property '${[...path, key].join('.')}' was updated. From ${stringify(oldValue)} to ${stringify(newValue)}`];
+      return `Property '${[...path, key].join('.')}' was updated. From ${stringify(oldValue)} to ${stringify(newValue)}`;
     default:
-      return acc;
+      return null;
   }
 }, []);
-export default ast => plain(ast).join('\n');
+export default ast => _.flatten(plain(ast)).filter(_.identity).join('\n');

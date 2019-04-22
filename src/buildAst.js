@@ -9,8 +9,7 @@ const buildAst = (firstConfig, secondConfig) => {
       if (_.isObject(firstConfig[key]) && _.isObject(secondConfig[key])) {
         return [...acc, {
           key,
-          value: '',
-          type: 'unchangedButHasChildren',
+          type: 'nested',
           children: buildAst(firstConfig[key], secondConfig[key]),
         }];
       }
@@ -19,7 +18,6 @@ const buildAst = (firstConfig, secondConfig) => {
           key,
           value: firstConfig[key],
           type: 'unchanged',
-          children: [],
         }];
       }
       return [...acc, {
@@ -27,7 +25,6 @@ const buildAst = (firstConfig, secondConfig) => {
         oldValue: firstConfig[key],
         newValue: secondConfig[key],
         type: 'changed',
-        children: [],
       }];
     }
     if (!_.has(firstConfig, key)) {
@@ -35,14 +32,12 @@ const buildAst = (firstConfig, secondConfig) => {
         key,
         value: secondConfig[key],
         type: 'added',
-        children: [],
       }];
     }
     return [...acc, {
       key,
       value: firstConfig[key],
       type: 'deleted',
-      children: [],
     }];
   }, []);
 };
