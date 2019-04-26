@@ -14,7 +14,7 @@ const plain = (ast, path = []) => ast.map((item) => {
     case 'added':
       return `Property '${[...path, key].join('.')}' was added with value: ${stringify(value)}`;
     case 'nested':
-      return plain(children, [...path, key]).filter(_.identity);
+      return plain(children, [...path, key]);
     case 'deleted':
       return `Property '${[...path, key].join('.')}' was removed`;
     case 'changed':
@@ -23,4 +23,4 @@ const plain = (ast, path = []) => ast.map((item) => {
       return null;
   }
 }, []);
-export default ast => _.flatten(plain(ast)).filter(_.identity).join('\n');
+export default ast => _.flattenDeep(plain(ast)).filter(_.identity).join('\n');

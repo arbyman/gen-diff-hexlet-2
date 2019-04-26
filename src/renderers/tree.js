@@ -28,7 +28,7 @@ const render = (ast, depth = 1) => ast.reduce((acc, item) => {
     case 'changed':
       return [...acc, `${currentTab(depth)}- ${key}: ${stringify(oldValue, depth + tab + 1)}\n${currentTab(depth)}+ ${key}: ${stringify(newValue, depth + tab + 1)}\n`];
     default:
-      throw new Error('Unknown type node');
+      throw new Error(`${type} - Unknown type node`);
   }
 }, []);
 
