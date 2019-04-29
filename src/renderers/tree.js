@@ -18,18 +18,18 @@ const render = (ast, depth = 1) => ast.reduce((acc, item) => {
   } = item;
   switch (type) {
     case 'added':
-      return [...acc, `${currentTab(depth)}+ ${key}: ${stringify(value, depth + tab + 1)}\n`];
+      return [...acc, `${currentTab(depth)}+ ${key}: ${stringify(value, depth + tab + 1)}`];
     case 'nested':
-      return [...acc, `${currentTab(depth)}  ${key}: {\n`, render(children, depth + tab), `${currentTab(depth)}  }\n`];
+      return [...acc, `${currentTab(depth)}  ${key}: {`, render(children, depth + tab), `${currentTab(depth)}  }`];
     case 'unchanged':
-      return [...acc, `${currentTab(depth)}  ${key}: ${stringify(value, depth + tab + 1)}\n`];
+      return [...acc, `${currentTab(depth)}  ${key}: ${stringify(value, depth + tab + 1)}`];
     case 'deleted':
-      return [...acc, `${currentTab(depth)}- ${key}: ${stringify(value, depth + tab + 1)}\n`];
+      return [...acc, `${currentTab(depth)}- ${key}: ${stringify(value, depth + tab + 1)}`];
     case 'changed':
-      return [...acc, `${currentTab(depth)}- ${key}: ${stringify(oldValue, depth + tab + 1)}\n`, `${currentTab(depth)}+ ${key}: ${stringify(newValue, depth + tab + 1)}\n`];
+      return [...acc, `${currentTab(depth)}- ${key}: ${stringify(oldValue, depth + tab + 1)}`, `${currentTab(depth)}+ ${key}: ${stringify(newValue, depth + tab + 1)}`];
     default:
       throw new Error(`${type} - Unknown type node`);
   }
 }, []);
 
-export default ast => `{\n${_.flattenDeep(render(ast)).join('')}}`;
+export default ast => `{\n${_.flattenDeep(render(ast)).join('\n')}\n}`;
