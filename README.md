@@ -64,4 +64,4 @@ Output formats: JSON, plain text, tree structure.
 }
 ```
 ## Look Asciinema
-https://asciinema.org/a/GAJH4WfCM3iyozg1nZTbvkROJ
+[![asciicast](https://asciinema.org/a/GAJH4WfCM3iyozg1nZTbvkROJ.svg)](https://asciinema.org/a/GAJH4WfCM3iyozg1nZTbvkROJ)
